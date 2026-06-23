@@ -11,46 +11,46 @@ Fundamentals  •  Theory  •  Standard Solutions  •  Procedures  •  Calcul
 
 Table of Contents
 Table of Contents	1
-Chapter 1: Fundamentals of Volumetric Analysis	1
+1: Fundamentals of Volumetric Analysis	1
 1.1 What is Volumetric Analysis?	1
 1.2 Why Use Volumetric Analysis?	1
 1.3 Key Equipment	1
 1.4 Types of Volumetric Analysis	1
 1.5 The Mole Concept: The Language of Titration	1
-Chapter 2: Neutralization Titration Theory	1
+2: Neutralization Titration Theory	1
 2.1 Acid-Base Reactions	1
 2.1.1 Common Neutralization Equations	1
 2.2 Stoichiometry of Neutralization	1
 2.3 The Equivalence Point vs. The End Point	1
 2.4 The pH Curve (Titration Curve)	1
 2.4.1 Influence of Acid and Base Strength on Equivalence Point pH	1
-Chapter 3: Standard Solutions and Their Preparation	1
+3: Standard Solutions and Their Preparation	1
 3.1 What is a Standard Solution?	1
 3.2 Common Primary Standards in Acid-Base Titration	1
 3.3 Preparing a Standard Solution: Step-by-Step	1
 3.4 Standardisation of NaOH	1
-Chapter 4: Titration Procedures and Techniques	1
+4: Titration Procedures and Techniques	1
 4.1 Setting Up the Burette	1
 4.2 Setting Up the Conical Flask	1
 4.3 The Titration Procedure	1
 4.4 Reading the Burette	1
 4.5 Determining Concordant Results	1
-Chapter 5: Indicators in Neutralization Titration	1
+5: Indicators in Neutralization Titration	1
 5.1 What is an Indicator?	1
 5.2 Common Indicators: Reference Table	1
 5.3 Choosing the Right Indicator	1
-Chapter 6: Titration Calculations	1
+6: Titration Calculations	1
 6.1 The Calculation Framework	1
 6.2 Worked Examples	1
 Example 1: Simple 1:1 Ratio — Finding Concentration of NaOH	1
 Example 2: 1:2 Ratio — Finding Concentration of H?SO?	1
 Example 3: Finding Mass Percentage in a Sample	1
 6.3 Back Titration	1
-Chapter 7: Sources of Error and How to Minimize Them	1
+7: Sources of Error and How to Minimize Them	1
 7.1 Types of Experimental Error	1
 7.2 Common Sources of Error and Remedies	1
 7.3 Evaluating Precision and Accuracy	1
-Chapter 8: Real-World Case Study — Pharmaceutical Quality Control	1
+8: Real-World Case Study — Pharmaceutical Quality Control	1
 8.1 Context and Problem Statement	1
 8.2 Chemistry of the Reaction	1
 8.3 Experimental Procedure	1
@@ -60,10 +60,10 @@ Procedure	1
 8.5 Calculations	1
 8.6 Interpretation of Results	1
 8.7 Possible Sources of Error in This Case Study	1
-Chapter 9: Practice Problems	1
+9: Practice Problems	1
 Section A: Fundamental Calculations	1
 Section B: Intermediate Problems	1
-Chapter 10: Summary and Quick Reference	1
+10: Summary and Quick Reference	1
 10.1 Key Formulas at a Glance	1
 10.2 Titration at a Glance — Flowchart Summary	1
 10.3 Indicators Quick Reference	1
@@ -72,7 +72,7 @@ Chapter 10: Summary and Quick Reference	1
 
 
 
-Chapter 1: Fundamentals of Volumetric Analysis
+1: Fundamentals of Volumetric Analysis
 
 1.1 What is Volumetric Analysis?
 Volumetric analysis (also called titrimetry) is a quantitative analytical technique that determines the concentration of an unknown solution by measuring the volume of a known solution required to complete a chemical reaction.
@@ -155,7 +155,7 @@ mol = g ÷ g/mol
 Always convert volumes from millilitres to litres before using the formula n = c × V. For example, 25.0 mL = 0.0250 L.
 
 
-Chapter 2: Neutralization Titration Theory
+2: Neutralization Titration Theory
 
 2.1 Acid-Base Reactions
 A neutralization reaction occurs when an acid reacts with a base to form a salt and water:
@@ -256,7 +256,7 @@ No clear indicator; potentiometric preferred
 Weak acid + Weak base titrations have a poorly defined equivalence point on the pH curve. These are not suitable for indicator-based titrations and are better analysed potentiometrically (using a pH meter).
 
 
-Chapter 3: Standard Solutions and Their Preparation
+3: Standard Solutions and Their Preparation
 
 3.1 What is a Standard Solution?
 ?? DEFINITION
@@ -310,7 +310,7 @@ n(KHP) = n(NaOH)  ?  c(NaOH) = n(KHP) / V(NaOH)
 
 
 
-Chapter 4: Titration Procedures and Techniques
+4: Titration Procedures and Techniques
 
 4.1 Setting Up the Burette
 8. Clamp the burette vertically on a retort stand.
@@ -395,7 +395,7 @@ Excluded (rough)
 Mean titre = (24.70 + 24.70 + 24.70) / 3 = 24.70 mL (titres 2, 3, and 5 are concordant)
 
 
-Chapter 5: Indicators in Neutralization Titration
+5: Indicators in Neutralization Titration
 
 5.1 What is an Indicator?
 ?? DEFINITION
@@ -468,7 +468,7 @@ Weak acid + Weak base
 No suitable indicator; use pH meter
 
 
-Chapter 6: Titration Calculations
+6: Titration Calculations
 
 6.1 The Calculation Framework
 Titration calculations follow a logical 5-step process:
@@ -541,7 +541,7 @@ m(CaCO?) = 0.01070 × 100.09 = 1.071 g
 % CaCO? = (1.071 / 2.00) × 100 = 53.6%
 
 
-Chapter 7: Sources of Error and How to Minimize Them
+7: Sources of Error and How to Minimize Them
 
 7.1 Types of Experimental Error
 Error Type
@@ -599,7 +599,7 @@ After completing your titration:
 
 
 
-Chapter 8: Real-World Case Study — Pharmaceutical Quality Control
+8: Real-World Case Study — Pharmaceutical Quality Control
 
 Determining the Acetylsalicylic Acid Content of Aspirin Tablets Using Back Titration
 
@@ -728,7 +728,7 @@ This batch FAILS the quality control specification. In a real pharmaceutical fac
 In a real pharmaceutical QC laboratory, the experiment would be performed in a tightly controlled environment under Good Laboratory Practice (GLP) guidelines. Instruments (balances, pipettes, burettes) would be calibrated regularly, and all data would be recorded in validated electronic systems.
 
 
-Chapter 9: Practice Problems
+9: Practice Problems
 
 Section A: Fundamental Calculations
 Question 1. 20.00 mL of HCl solution was titrated with 0.150 mol/L NaOH. The mean titre was 22.50 mL. Calculate the concentration of the HCl solution.
@@ -789,7 +789,7 @@ n(Mg(OH)?) = 0.02035 / 2 = 1.018 × 10?² mol
 (b) % = (0.5937 / 1.200) × 100 = 49.5%
 
 
-Chapter 10: Summary and Quick Reference
+10: Summary and Quick Reference
 
 10.1 Key Formulas at a Glance
 Formula
