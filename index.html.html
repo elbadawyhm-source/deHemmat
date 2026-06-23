@@ -1,0 +1,575 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.nb{display:flex;height:680px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.sidebar{width:220px;min-width:220px;border-right:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;flex-direction:column;overflow:hidden}
+.sb-header{padding:16px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sb-title{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.sb-sub{font-size:12px;color:var(--color-text-tertiary);margin-top:2px}
+.ch-list{flex:1;overflow-y:auto;padding:8px}
+.ch-btn{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:8px 10px;border-radius:var(--border-radius-md);display:flex;align-items:center;gap:8px;margin-bottom:2px;transition:background .15s}
+.ch-btn:hover{background:var(--color-background-primary)}
+.ch-btn.active{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary)}
+.ch-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;background:#E6F1FB;color:#0C447C}
+.ch-btn.active .ch-num{background:#185FA5;color:#fff}
+.ch-label{font-size:12px;color:var(--color-text-primary);line-height:1.3}
+.content{flex:1;overflow-y:auto;padding:28px 32px}
+.chapter{display:none}
+.chapter.active{display:block}
+.ch-hero{margin-bottom:24px;padding-bottom:16px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ch-hero-tag{font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.ch-hero-title{font-size:22px;font-weight:500;color:var(--color-text-primary);line-height:1.2}
+.ch-hero-desc{font-size:14px;color:var(--color-text-secondary);margin-top:6px;line-height:1.6}
+h2.sec{font-size:16px;font-weight:500;color:var(--color-text-primary);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+h2.sec::after{content:'';flex:1;height:0.5px;background:var(--color-border-tertiary)}
+h3.subsec{font-size:14px;font-weight:500;color:var(--color-text-secondary);margin:16px 0 8px}
+p.body{font-size:14px;color:var(--color-text-primary);line-height:1.7;margin-bottom:10px}
+.callout{border-radius:var(--border-radius-md);padding:12px 16px;margin:12px 0;font-size:13px;line-height:1.6}
+.callout-def{background:#E6F1FB;border-left:3px solid #185FA5;color:#0C447C}
+.callout-tip{background:#EAF3DE;border-left:3px solid #3B6D11;color:#27500A}
+.callout-warn{background:#FAEEDA;border-left:3px solid #854F0B;color:#633806}
+.callout-ex{background:#EAF3DE;border-left:3px solid #639922;color:#3B6D11}
+.callout-case{background:#EEEDFE;border-left:3px solid #534AB7;color:#3C3489}
+.callout-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;opacity:.75}
+table.data{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+table.data th{background:#E6F1FB;color:#0C447C;font-weight:500;padding:8px 10px;text-align:left;font-size:12px}
+table.data td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top}
+table.data tr:nth-child(even) td{background:var(--color-background-secondary)}
+ul.pts,ol.pts{padding-left:20px;margin:8px 0}
+ul.pts li,ol.pts li{font-size:14px;color:var(--color-text-primary);line-height:1.7;margin-bottom:4px}
+.formula-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:12px 18px;text-align:center;font-size:16px;font-weight:500;color:var(--color-text-primary);margin:12px 0;letter-spacing:.03em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.card-sm{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px}
+.card-sm-label{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.card-sm-val{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+.card-sm-desc{font-size:12px;color:var(--color-text-secondary);margin-top:3px}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-blue{background:#B5D4F4;color:#0C447C}
+.badge-green{background:#C0DD97;color:#27500A}
+.badge-amber{background:#FAC775;color:#633806}
+.badge-red{background:#F7C1C1;color:#791F1F}
+.badge-purple{background:#CECBF6;color:#3C3489}
+.step-num{width:24px;height:24px;border-radius:50%;background:#185FA5;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.step-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.step-txt{font-size:14px;color:var(--color-text-primary);line-height:1.6;padding-top:2px}
+.quiz-area{margin-top:12px}
+.quiz-q{font-size:14px;color:var(--color-text-primary);font-weight:500;margin-bottom:10px;line-height:1.5}
+.quiz-options{display:grid;gap:6px}
+.quiz-opt{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:9px 14px;font-size:13px;cursor:pointer;text-align:left;color:var(--color-text-primary);transition:all .15s}
+.quiz-opt:hover{border-color:#185FA5;background:#E6F1FB;color:#0C447C}
+.quiz-opt.correct{background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.quiz-opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.quiz-feedback{font-size:13px;margin-top:8px;padding:10px 14px;border-radius:var(--border-radius-md);display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.good{background:#EAF3DE;color:#27500A}
+.quiz-feedback.bad{background:#FCEBEB;color:#791F1F}
+.quiz-nav{display:flex;gap:8px;margin-top:12px;align-items:center}
+.qn-label{font-size:12px;color:var(--color-text-secondary);flex:1}
+.next-q{font-size:13px;cursor:pointer}
+.calc-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.calc-row label{font-size:13px;color:var(--color-text-secondary);min-width:140px}
+.calc-row input{width:90px;font-size:14px;padding:6px 10px}
+.calc-result{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:14px 16px;margin-top:14px;font-size:14px;color:var(--color-text-primary);line-height:1.8}
+.calc-result strong{color:#185FA5}
+.ph-bar{display:flex;height:28px;border-radius:var(--border-radius-md);overflow:hidden;margin:10px 0}
+.ph-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex:1}
+.ind-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.ind-swatch{width:36px;height:20px;border-radius:4px;border:0.5px solid var(--color-border-tertiary)}
+.ind-range{font-size:12px;color:var(--color-text-secondary)}
+.progress-row{display:flex;gap:4px;padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:var(--color-border-secondary);transition:background .2s;flex-shrink:0;margin-top:2px}
+.prog-dot.done{background:#185FA5}
+</style>
+
+<h2 class="sr-only">Interactive study notebook: Volumetric analysis and neutralization titration — 10 chapters with explanations, calculators, and quizzes</h2>
+
+<div class="nb">
+  <div class="sidebar">
+    <div class="sb-header">
+      <div class="sb-title">Study Notebook</div>
+      <div class="sb-sub">Neutralization Titration</div>
+    </div>
+    <div class="progress-row" id="prog-row"></div>
+    <div class="ch-list" id="ch-list"></div>
+  </div>
+  <div class="content" id="content-area"></div>
+</div>
+
+<script>
+const chapters = [
+  {
+    title:"Fundamentals",
+    full:"Fundamentals of Volumetric Analysis",
+    desc:"Definitions, equipment, mole concept, and types of volumetric methods.",
+    content: `
+      <h2 class="sec">What is volumetric analysis?</h2>
+      <p class="body"><strong>Volumetric analysis</strong> (titrimetry) determines the concentration of an unknown solution by measuring the volume of a known solution required to complete a chemical reaction.</p>
+      <div class="callout callout-def"><div class="callout-label">Key definitions</div>
+        <strong>Titrant</strong> — solution of known concentration in the burette.<br>
+        <strong>Analyte</strong> — solution of unknown concentration in the flask.<br>
+        <strong>Equivalence point</strong> — moles of titrant exactly equal stoichiometric moles of analyte.<br>
+        <strong>End point</strong> — observable colour change signalling the equivalence point.
+      </div>
+      <h2 class="sec">Key equipment</h2>
+      <table class="data"><thead><tr><th>Equipment</th><th>Purpose</th><th>Precision</th></tr></thead><tbody>
+        <tr><td>Burette (50 mL)</td><td>Delivers titrant; graduated</td><td>± 0.05 mL</td></tr>
+        <tr><td>Pipette (25 mL)</td><td>Transfers exact volume of analyte</td><td>± 0.06 mL</td></tr>
+        <tr><td>Volumetric flask</td><td>Prepares standard solutions</td><td>± 0.1 mL</td></tr>
+        <tr><td>Conical flask</td><td>Holds analyte during titration</td><td>Not precise</td></tr>
+        <tr><td>White tile</td><td>Contrast to detect colour change</td><td>—</td></tr>
+      </tbody></table>
+      <h2 class="sec">Types of volumetric analysis</h2>
+      <table class="data"><thead><tr><th>Type</th><th>Reaction</th><th>Example</th></tr></thead><tbody>
+        <tr><td><span class="badge badge-blue">Acid-Base</span></td><td>H⁺ + OH⁻ → H₂O</td><td>Acidity of vinegar</td></tr>
+        <tr><td><span class="badge badge-purple">Redox</span></td><td>Electron transfer</td><td>Iron content in ore</td></tr>
+        <tr><td><span class="badge badge-green">Precipitation</span></td><td>Insoluble salt forms</td><td>Chloride in water</td></tr>
+        <tr><td><span class="badge badge-amber">Complexometric</span></td><td>Metal–EDTA complex</td><td>Water hardness</td></tr>
+      </tbody></table>
+      <div class="callout callout-tip"><div class="callout-label">Focus</div>This notebook covers <strong>acid-base neutralization titration</strong> — the most commonly examined type at secondary and introductory undergraduate level.</div>
+    `
+  },
+  {
+    title:"Theory",
+    full:"Neutralization Titration Theory",
+    desc:"Acid-base reactions, stoichiometry, equivalence point, and pH curves.",
+    content: `
+      <h2 class="sec">The neutralization reaction</h2>
+      <div class="formula-box">Acid + Base → Salt + Water</div>
+      <div class="formula-box" style="font-size:14px;color:var(--color-text-secondary)">At ionic level: &nbsp; H⁺(aq) + OH⁻(aq) → H₂O(l)</div>
+      <h2 class="sec">Common equations</h2>
+      <table class="data"><thead><tr><th>Acid</th><th>Base</th><th>Products</th><th>Ratio</th></tr></thead><tbody>
+        <tr><td>HCl</td><td>NaOH</td><td>NaCl + H₂O</td><td>1 : 1</td></tr>
+        <tr><td>H₂SO₄</td><td>NaOH</td><td>Na₂SO₄ + H₂O</td><td>1 : 2</td></tr>
+        <tr><td>HCl</td><td>Ca(OH)₂</td><td>CaCl₂ + H₂O</td><td>2 : 1</td></tr>
+        <tr><td>CH₃COOH</td><td>NaOH</td><td>CH₃COONa + H₂O</td><td>1 : 1</td></tr>
+      </tbody></table>
+      <div class="callout callout-warn"><div class="callout-label">Watch out</div>Diprotic acids (H₂SO₄) donate two protons. Always balance the equation first to find the correct mole ratio before calculating.</div>
+      <h2 class="sec">Equivalence point vs end point</h2>
+      <div class="grid2">
+        <div class="card-sm"><div class="card-sm-label">Equivalence point</div><div class="card-sm-val" style="font-size:14px">Theoretical</div><div class="card-sm-desc">Exact stoichiometric neutralization — calculated, not observed.</div></div>
+        <div class="card-sm"><div class="card-sm-label">End point</div><div class="card-sm-val" style="font-size:14px">Observable</div><div class="card-sm-desc">Indicator colour change — what you actually see in the lab.</div></div>
+      </div>
+      <h2 class="sec">Equivalence point pH by titration type</h2>
+      <table class="data"><thead><tr><th>Acid</th><th>Base</th><th>EP pH</th><th>Best indicator</th></tr></thead><tbody>
+        <tr><td>Strong</td><td>Strong</td><td>7.0</td><td>Phenolphthalein or methyl orange</td></tr>
+        <tr><td>Weak</td><td>Strong</td><td>8–10</td><td>Phenolphthalein</td></tr>
+        <tr><td>Strong</td><td>Weak</td><td>4–6</td><td>Methyl orange</td></tr>
+        <tr><td>Weak</td><td>Weak</td><td>~7 (unclear)</td><td>Use pH meter instead</td></tr>
+      </tbody></table>
+    `
+  },
+  {
+    title:"Standard Solutions",
+    full:"Standard Solutions & Their Preparation",
+    desc:"Primary vs secondary standards, how to prepare and standardise solutions.",
+    content: `
+      <h2 class="sec">Primary vs secondary standards</h2>
+      <div class="callout callout-def"><div class="callout-label">Definition</div>
+        <strong>Primary standard</strong> — highly pure, stable, high molar mass, non-hygroscopic substance. Concentration known directly from mass.<br><br>
+        <strong>Secondary standard</strong> — a solution calibrated by titrating against a primary standard (e.g. NaOH must be standardised because it absorbs CO₂).
+      </div>
+      <h2 class="sec">Common primary standards</h2>
+      <table class="data"><thead><tr><th>Substance</th><th>Formula</th><th>Mᵣ</th><th>Used to standardise</th></tr></thead><tbody>
+        <tr><td>Sodium carbonate</td><td>Na₂CO₃</td><td>105.99</td><td>HCl</td></tr>
+        <tr><td>Potassium hydrogen phthalate</td><td>KHP</td><td>204.22</td><td>NaOH</td></tr>
+        <tr><td>Borax</td><td>Na₂B₄O₇·10H₂O</td><td>381.37</td><td>HCl</td></tr>
+        <tr><td>Oxalic acid dihydrate</td><td>H₂C₂O₄·2H₂O</td><td>126.07</td><td>NaOH</td></tr>
+      </tbody></table>
+      <h2 class="sec">Preparing a standard solution — 7 steps</h2>
+      ${[
+        "Calculate mass: n = c × V, then m = n × Mᵣ",
+        "Dry the primary standard (e.g. Na₂CO₃ at 270 °C, 1 hour). Cool in desiccator.",
+        "Weigh accurately on a 4 d.p. analytical balance. Record exact mass.",
+        "Dissolve in ~100 mL distilled water in a beaker. Stir to dissolve completely.",
+        "Transfer to a volumetric flask. Rinse the beaker 3× and add washings to flask.",
+        "Make up to the graduation mark with distilled water. Stopper; invert 10 times.",
+        "Recalculate exact concentration using the actual mass weighed."
+      ].map((s,i)=>`<div class="step-row"><span class="step-num">${i+1}</span><span class="step-txt">${s}</span></div>`).join('')}
+      <div class="callout callout-tip"><div class="callout-label">Tip</div>Always recalculate the <strong>exact concentration</strong> from the actual mass weighed — the value will differ slightly from the nominal target.</div>
+    `
+  },
+  {
+    title:"Procedures",
+    full:"Titration Procedures & Techniques",
+    desc:"Setting up the burette, performing accurate titrations, and determining concordant results.",
+    content: `
+      <h2 class="sec">Setting up the burette</h2>
+      ${["Clamp burette vertically on a retort stand.",
+         "Rinse with 3 × 5 mL portions of the titrant. Discard rinsings.",
+         "Fill above 0.00 mL. Open tap briefly to fill tip and expel air bubbles.",
+         "Read initial level at the bottom of the meniscus. Record to ± 0.05 mL."
+        ].map((s,i)=>`<div class="step-row"><span class="step-num">${i+1}</span><span class="step-txt">${s}</span></div>`).join('')}
+      <div class="callout callout-warn"><div class="callout-label">Watch out</div>Check for air bubbles in the tip before starting. An air bubble expels during titration, giving a falsely large titre.</div>
+      <h2 class="sec">Setting up the conical flask</h2>
+      ${["Rinse the conical flask with distilled water only.",
+         "Pipette exactly 25.00 mL of analyte into the flask.",
+         "Add 2–3 drops of appropriate indicator.",
+         "Place on a white tile directly beneath the burette tip."
+        ].map((s,i)=>`<div class="step-row"><span class="step-num">${i+1}</span><span class="step-txt">${s}</span></div>`).join('')}
+      <div class="callout callout-tip"><div class="callout-label">Why no analyte rinse?</div>The flask is rinsed with distilled water only — adding water changes volume but not the <strong>number of moles</strong> delivered by the pipette.</div>
+      <h2 class="sec">Concordant results</h2>
+      <p class="body">Titres are concordant when they agree within <strong>± 0.10 mL</strong>. Use only concordant titres to calculate the mean.</p>
+      <table class="data"><thead><tr><th>Titration</th><th>Initial (mL)</th><th>Final (mL)</th><th>Titre (mL)</th><th>Use?</th></tr></thead><tbody>
+        <tr><td>Rough</td><td>0.00</td><td>24.85</td><td>24.85</td><td><span class="badge badge-amber">Exclude</span></td></tr>
+        <tr><td>1</td><td>0.00</td><td>24.70</td><td>24.70</td><td><span class="badge badge-green">✓</span></td></tr>
+        <tr><td>2</td><td>0.05</td><td>24.75</td><td>24.70</td><td><span class="badge badge-green">✓</span></td></tr>
+        <tr><td>3</td><td>0.00</td><td>24.80</td><td>24.80</td><td><span class="badge badge-red">✗ off by 0.10</span></td></tr>
+        <tr><td>4</td><td>0.10</td><td>24.80</td><td>24.70</td><td><span class="badge badge-green">✓</span></td></tr>
+      </tbody></table>
+      <p class="body">Mean concordant titre = (24.70 + 24.70 + 24.70) / 3 = <strong>24.70 mL</strong></p>
+    `
+  },
+  {
+    title:"Indicators",
+    full:"Indicators in Neutralization Titration",
+    desc:"How indicators work, transition ranges, and choosing the right one.",
+    content: `
+      <h2 class="sec">How indicators work</h2>
+      <p class="body">An indicator is a weak acid (HIn) whose protonated and deprotonated forms have different colours. The colour changes over the <strong>transition range</strong>.</p>
+      <div class="formula-box">HIn ⇌ H⁺ + In⁻ &nbsp; (Colour 1 → Colour 2)</div>
+      <div class="callout callout-warn"><div class="callout-label">Use only 2–3 drops</div>Too much indicator consumes titrant and introduces an error. The colour change should be from colourless to the first faint persistent colour.</div>
+      <h2 class="sec">Common indicators</h2>
+      <div id="ind-vis" style="margin:10px 0"></div>
+      <table class="data"><thead><tr><th>Indicator</th><th>pH range</th><th>Acid</th><th>Base</th><th>Best for</th></tr></thead><tbody>
+        <tr><td>Methyl orange</td><td>3.1–4.4</td><td>Red</td><td>Yellow</td><td>Strong acid + weak base</td></tr>
+        <tr><td>Methyl red</td><td>4.4–6.2</td><td>Red</td><td>Yellow</td><td>Strong acid + weak base</td></tr>
+        <tr><td>Bromothymol blue</td><td>6.0–7.6</td><td>Yellow</td><td>Blue</td><td>Strong acid + strong base</td></tr>
+        <tr><td>Phenolphthalein</td><td>8.2–10.0</td><td>Colourless</td><td>Pink</td><td>Acid + strong base</td></tr>
+        <tr><td>Thymolphthalein</td><td>9.3–10.5</td><td>Colourless</td><td>Blue</td><td>Weak acid + strong base</td></tr>
+      </tbody></table>
+      <h2 class="sec">Interactive pH scale with indicator ranges</h2>
+      <div style="margin:12px 0">
+        <div style="display:flex;height:20px;border-radius:4px;overflow:hidden;margin-bottom:6px">
+          ${Array.from({length:14},(_,i)=>{
+            const hue=i<4?0:i<7?30:i<9?60:i<11?120:240;
+            const sat=i<2||i>11?'60%':'70%';
+            const lig=i<3?'55%':i<7?'65%':i<10?'70%':'55%';
+            return `<div style="flex:1;background:hsl(${hue},${sat},${lig})"></div>`
+          }).join('')}
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--color-text-tertiary);margin-bottom:12px">
+          <span>pH 1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+        </div>
+        ${[
+          {name:'Methyl orange',lo:3.1,hi:4.4,col:'#E8860A'},
+          {name:'Methyl red',lo:4.4,hi:6.2,col:'#C0392B'},
+          {name:'Bromothymol blue',lo:6.0,hi:7.6,col:'#2E86C1'},
+          {name:'Phenolphthalein',lo:8.2,hi:10.0,col:'#8E44AD'},
+          {name:'Thymolphthalein',lo:9.3,hi:10.5,col:'#1A5276'},
+        ].map(ind=>`
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:12px">
+            <span style="width:110px;color:var(--color-text-secondary)">${ind.name}</span>
+            <div style="flex:1;position:relative;height:14px;background:var(--color-background-secondary);border-radius:4px">
+              <div style="position:absolute;left:${(ind.lo/14)*100}%;width:${((ind.hi-ind.lo)/14)*100}%;height:100%;background:${ind.col};border-radius:4px;opacity:.8"></div>
+            </div>
+            <span style="width:60px;text-align:right;color:var(--color-text-tertiary)">${ind.lo}–${ind.hi}</span>
+          </div>
+        `).join('')}
+      </div>
+    `
+  },
+  {
+    title:"Calculations",
+    full:"Titration Calculations",
+    desc:"5-step framework, worked examples, and an interactive calculator.",
+    content: `
+      <h2 class="sec">The 5-step framework</h2>
+      ${[
+        ["Write and balance the equation","Get the mole ratio"],
+        ["Calculate moles of known: n = c × V","Volume in litres!"],
+        ["Apply mole ratio to find moles of unknown","n(unknown) = n(known) × ratio"],
+        ["Find concentration or mass: c = n/V or m = n × Mᵣ","Check units"],
+        ["Check sig figs — match precision of burette (4 s.f.)","Report clearly"],
+      ].map(([a,b],i)=>`<div class="step-row"><span class="step-num">${i+1}</span><span class="step-txt"><strong>${a}</strong> — ${b}</span></div>`).join('')}
+      <h2 class="sec">Interactive titration calculator</h2>
+      <p class="body" style="font-size:13px;color:var(--color-text-secondary)">Enter known values to find the concentration of the unknown:</p>
+      <div class="calc-row"><label>Titrant concentration (mol/L)</label><input type="number" id="cc" value="0.100" step="0.001" min="0"></div>
+      <div class="calc-row"><label>Titrant volume (mL)</label><input type="number" id="vc" value="22.40" step="0.01" min="0"></div>
+      <div class="calc-row"><label>Analyte volume (mL)</label><input type="number" id="va" value="25.00" step="0.01" min="0"></div>
+      <div class="calc-row"><label>Mole ratio (acid : base)</label>
+        <select id="ratio" style="font-size:14px;padding:6px 10px">
+          <option value="1">1 : 1 (e.g. HCl / NaOH)</option>
+          <option value="2">1 : 2 (e.g. H₂SO₄ / NaOH) — acid is half</option>
+          <option value="0.5">2 : 1 (e.g. HCl / Ca(OH)₂) — acid is double</option>
+        </select>
+      </div>
+      <div id="calc-out" class="calc-result"></div>
+      <h2 class="sec">Worked example — H₂SO₄ vs NaOH (1:2)</h2>
+      <div class="callout callout-ex"><div class="callout-label">Worked example</div>
+        20.00 mL of H₂SO₄ required 36.75 mL of 0.200 mol/L NaOH.<br><br>
+        n(NaOH) = 0.200 × 0.03675 = 7.350 × 10⁻³ mol<br>
+        n(H₂SO₄) = 7.350 × 10⁻³ ÷ 2 = 3.675 × 10⁻³ mol<br>
+        c(H₂SO₄) = 3.675 × 10⁻³ ÷ 0.02000 = <strong>0.184 mol/L</strong>
+      </div>
+    `
+  },
+  {
+    title:"Errors",
+    full:"Sources of Error & How to Minimise Them",
+    desc:"Types of error, common mistakes, and how to evaluate precision and accuracy.",
+    content: `
+      <h2 class="sec">Types of experimental error</h2>
+      <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div class="card-sm"><div class="card-sm-label">Random error</div><div class="card-sm-val" style="font-size:13px">Unpredictable</div><div class="card-sm-desc">Affects precision. Example: slight meniscus reading variations.</div></div>
+        <div class="card-sm"><div class="card-sm-label">Systematic error</div><div class="card-sm-val" style="font-size:13px">Consistent offset</div><div class="card-sm-desc">Affects accuracy. Example: dirty burette, wrong indicator.</div></div>
+        <div class="card-sm"><div class="card-sm-label">Gross error</div><div class="card-sm-val" style="font-size:13px">Major mistake</div><div class="card-sm-desc">Example: using wrong indicator or misidentifying the end point.</div></div>
+      </div>
+      <h2 class="sec">Common sources and remedies</h2>
+      <table class="data"><thead><tr><th>Source</th><th>Effect</th><th>Remedy</th></tr></thead><tbody>
+        <tr><td>Air bubble in burette tip</td><td>Falsely large titre</td><td>Expel before starting; check tip</td></tr>
+        <tr><td>Parallax error (meniscus)</td><td>Wrong volume reading</td><td>Read at eye level, bottom of meniscus</td></tr>
+        <tr><td>Rinsing flask with analyte</td><td>Extra moles; high titre</td><td>Rinse with distilled water only</td></tr>
+        <tr><td>Not rinsing burette with titrant</td><td>Diluted titrant; low concentration</td><td>Rinse 3× with titrant before filling</td></tr>
+        <tr><td>Wrong indicator</td><td>End point at wrong pH</td><td>Match indicator range to EP pH</td></tr>
+        <tr><td>Too many indicator drops</td><td>Indicator consumes titrant</td><td>Use only 2–3 drops</td></tr>
+        <tr><td>Not drying primary standard</td><td>Incorrect concentration</td><td>Dry at specified temp; use desiccator</td></tr>
+        <tr><td>Inadequate swirling</td><td>Late / missed end point</td><td>Swirl continuously throughout</td></tr>
+      </tbody></table>
+      <h2 class="sec">Evaluating your results</h2>
+      <div class="formula-box" style="font-size:14px">% Error = |Experimental − Accepted| / Accepted × 100%</div>
+      <div class="callout callout-tip"><div class="callout-label">Precision vs accuracy</div>
+        <strong>Precision</strong> — three concordant titres within 0.10 mL of each other.<br>
+        <strong>Accuracy</strong> — your mean titre close to the true/accepted value (small % error).
+      </div>
+    `
+  },
+  {
+    title:"Case Study",
+    full:"Case Study — Pharmaceutical QC",
+    desc:"Real-world back titration to verify aspirin tablet content against a regulatory specification.",
+    content: `
+      <div class="callout callout-case"><div class="callout-label">Context</div>
+        A quality control chemist at a pharmaceutical facility must verify that aspirin tablets contain 95–105% of the stated 500 mg dose of acetylsalicylic acid (ASA) before the batch can be released.
+      </div>
+      <h2 class="sec">Why back titration?</h2>
+      <ul class="pts">
+        <li>ASA reacts slowly with NaOH at room temperature — direct titration is unreliable.</li>
+        <li>Heating with excess NaOH causes rapid, complete hydrolysis.</li>
+        <li>Excess NaOH is then back-titrated with standardised HCl.</li>
+      </ul>
+      <h2 class="sec">Reactions</h2>
+      <div class="callout callout-case" style="font-family:var(--font-mono);font-size:13px">
+        <div class="callout-label">Step 1 — hydrolysis</div>
+        C₉H₈O₄ + 3 NaOH → C₇H₅O₃Na + CH₃COONa + 2 H₂O
+        <div class="callout-label" style="margin-top:10px">Step 2 — back titration</div>
+        NaOH + HCl → NaCl + H₂O
+      </div>
+      <h2 class="sec">Results and calculation</h2>
+      <table class="data"><thead><tr><th>Titration</th><th>Titre (mL)</th><th>Concordant?</th></tr></thead><tbody>
+        <tr><td>Rough</td><td>18.60</td><td><span class="badge badge-amber">Excluded</span></td></tr>
+        <tr><td>1</td><td>18.45</td><td><span class="badge badge-green">✓</span></td></tr>
+        <tr><td>2</td><td>18.45</td><td><span class="badge badge-green">✓</span></td></tr>
+        <tr><td>3</td><td>18.45</td><td><span class="badge badge-green">✓</span></td></tr>
+      </tbody></table>
+      <div class="callout callout-case"><div class="callout-label">Full calculation</div>
+        n(NaOH) added = 0.5000 × 0.05000 = 0.02500 mol<br>
+        n(HCl) in back titration = 0.2500 × 0.01845 = 4.613 × 10⁻³ mol<br>
+        n(NaOH) excess = 4.613 × 10⁻³ mol<br>
+        n(NaOH) reacted with ASA = 0.02500 − 0.004613 = 0.02039 mol<br>
+        n(ASA) = 0.02039 ÷ 3 = 6.796 × 10⁻³ mol<br>
+        m(ASA) per tablet = (6.796 × 10⁻³ × 180.16) ÷ 5 = <strong>244.8 mg</strong>
+      </div>
+      <div class="grid2">
+        <div class="card-sm"><div class="card-sm-label">Result</div><div class="card-sm-val" style="color:#A32D2D">244.8 mg</div><div class="card-sm-desc">Measured ASA per tablet</div></div>
+        <div class="card-sm"><div class="card-sm-label">Specification</div><div class="card-sm-val" style="color:#27500A">475–525 mg</div><div class="card-sm-desc">95–105% of 500 mg stated dose</div></div>
+      </div>
+      <div class="callout callout-warn"><div class="callout-label">Outcome — FAIL</div>48.96% of stated dose. Batch is quarantined. OOS investigation initiated per GMP regulations.</div>
+    `
+  },
+  {
+    title:"Practice",
+    full:"Practice Problems",
+    desc:"Six graded questions with step-by-step answers.",
+    content: `
+      <h2 class="sec">Question bank</h2>
+      <p class="body" style="font-size:13px;color:var(--color-text-secondary)">Work through each question, then reveal the full solution.</p>
+      ${[
+        {q:"20.00 mL of HCl was titrated with 0.150 mol/L NaOH. Mean titre = 22.50 mL. Find c(HCl).",
+         a:"HCl + NaOH → NaCl + H₂O (1:1)<br>n(NaOH) = 0.150 × 0.02250 = 3.375 × 10⁻³ mol<br>n(HCl) = 3.375 × 10⁻³ mol<br><strong>c(HCl) = 3.375 × 10⁻³ ÷ 0.02000 = 0.169 mol/L</strong>"},
+        {q:"25.00 mL of H₂SO₄ required 40.00 mL of 0.200 mol/L NaOH. Find c(H₂SO₄).",
+         a:"H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O (1:2)<br>n(NaOH) = 0.200 × 0.04000 = 8.000 × 10⁻³ mol<br>n(H₂SO₄) = 8.000 × 10⁻³ ÷ 2 = 4.000 × 10⁻³ mol<br><strong>c(H₂SO₄) = 4.000 × 10⁻³ ÷ 0.02500 = 0.160 mol/L</strong>"},
+        {q:"What mass of Na₂CO₃ (Mᵣ = 105.99) is needed for 500.0 mL of 0.0500 mol/L solution?",
+         a:"n = 0.0500 × 0.5000 = 0.02500 mol<br><strong>m = 0.02500 × 105.99 = 2.650 g</strong>"},
+        {q:"3.000 g of impure KOH (Mᵣ = 56.11) dissolved and titrated with 0.500 mol/L HCl; titre = 95.60 mL. Find % purity.",
+         a:"KOH + HCl → KCl + H₂O (1:1)<br>n(HCl) = 0.500 × 0.09560 = 0.04780 mol<br>m(KOH) = 0.04780 × 56.11 = 2.682 g<br><strong>% purity = (2.682 ÷ 3.000) × 100 = 89.4%</strong>"},
+        {q:"An antacid tablet (1.200 g) was dissolved in 50.00 mL of 0.500 mol/L HCl. Excess HCl needed 18.60 mL of 0.250 mol/L NaOH in back titration. Find mass of Mg(OH)₂ (Mᵣ = 58.32).",
+         a:"n(HCl) total = 0.500 × 0.05000 = 0.02500 mol<br>n(NaOH) = 0.250 × 0.01860 = 4.650 × 10⁻³ mol<br>n(HCl) reacted with Mg(OH)₂ = 0.02500 − 0.004650 = 0.02035 mol<br>n(Mg(OH)₂) = 0.02035 ÷ 2 = 1.018 × 10⁻² mol (Mg(OH)₂ + 2HCl ratio 1:2)<br><strong>m = 1.018 × 10⁻² × 58.32 = 0.5937 g &nbsp;→ 49.5% of tablet</strong>"},
+        {q:"CHALLENGE: A 1.500 g impure H₂C₂O₄ sample (Mᵣ = 90.03) was titrated with 0.100 mol/L NaOH; titre = 28.60 mL. Find % purity.",
+         a:"H₂C₂O₄ + 2NaOH → Na₂C₂O₄ + 2H₂O (1:2)<br>n(NaOH) = 0.100 × 0.02860 = 2.860 × 10⁻³ mol<br>n(H₂C₂O₄) = 2.860 × 10⁻³ ÷ 2 = 1.430 × 10⁻³ mol<br>m(pure) = 1.430 × 10⁻³ × 90.03 = 0.1287 g<br><strong>% purity = (0.1287 ÷ 1.500) × 100 = 8.58%</strong>"},
+      ].map((item,i)=>`
+        <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px 16px;margin-bottom:10px">
+          <p class="body" style="font-weight:500;margin-bottom:8px"><span class="badge badge-blue" style="margin-right:8px">Q${i+1}</span>${item.q}</p>
+          <button onclick="toggleAns(${i})" style="font-size:12px;cursor:pointer;margin-bottom:4px">Show answer</button>
+          <div id="ans-${i}" style="display:none" class="callout callout-ex"><div class="callout-label">Solution</div>${item.a}</div>
+        </div>
+      `).join('')}
+    `
+  },
+  {
+    title:"Quiz",
+    full:"Knowledge Check — Quick Quiz",
+    desc:"Test yourself across all chapters with instant feedback.",
+    content: `
+      <h2 class="sec">Quick quiz</h2>
+      <div id="quiz-container"></div>
+    `
+  }
+];
+
+const quizData = [
+  {q:"What does the equivalence point represent in a titration?",opts:["The point where the indicator changes colour","The theoretical point where acid moles exactly equal base moles stoichiometrically","The midpoint of the titration","The point where pH = 7"],ans:1,exp:"The equivalence point is a theoretical concept based on stoichiometry. The end point is the observable colour change."},
+  {q:"Why should the conical flask only be rinsed with distilled water (not the analyte)?",opts:["Distilled water is cheaper","Analyte would react with the glass","Rinsing with distilled water changes volume but not the number of moles of analyte delivered by the pipette","The analyte would evaporate"],ans:2,exp:"The pipette delivers an exact number of moles. Adding water increases volume but not moles, so the calculation is unaffected."},
+  {q:"HCl is titrated with NaOH. Which indicator is most appropriate?",opts:["Methyl orange (pH 3.1–4.4)","Universal indicator","Phenolphthalein (pH 8.2–10.0)","Either phenolphthalein or methyl orange — both work for strong acid + strong base"],ans:3,exp:"For strong acid vs strong base the equivalence point is at pH 7. Both methyl orange and phenolphthalein have the steep part of the curve within their transition ranges."},
+  {q:"25.00 mL of NaOH was titrated with 0.100 mol/L HCl; titre = 20.00 mL. What is c(NaOH)?",opts:["0.100 mol/L","0.0800 mol/L","0.125 mol/L","0.200 mol/L"],ans:1,exp:"n(HCl) = 0.100 × 0.02000 = 2.000 × 10⁻³ mol. Ratio 1:1. c(NaOH) = 2.000 × 10⁻³ ÷ 0.02500 = 0.0800 mol/L."},
+  {q:"An air bubble in the burette tip at the start of a titration will cause the titre to appear:",opts:["Too small","Too large","Unchanged — bubbles don't affect the reading","Variable and unpredictable"],ans:1,exp:"The bubble occupies volume in the tip. When it escapes during the titration, it is recorded as if titrant was delivered, making the titre appear larger than it truly was."},
+  {q:"Which substance CANNOT serve as a primary standard?",opts:["Anhydrous sodium carbonate (Na₂CO₃)","Potassium hydrogen phthalate (KHP)","Sodium hydroxide (NaOH)","Borax (Na₂B₄O₇·10H₂O)"],ans:2,exp:"NaOH absorbs water and CO₂ from air, so its composition is not reliably known. It must be standardised as a secondary standard by titrating against a primary standard like KHP."},
+];
+
+let currentQ = 0;
+let answered = [];
+
+function renderQuiz() {
+  const c = document.getElementById('quiz-container');
+  if (!c) return;
+  const q = quizData[currentQ];
+  c.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <span class="badge badge-blue">Question ${currentQ+1} of ${quizData.length}</span>
+      <span style="font-size:12px;color:var(--color-text-tertiary)">${answered.filter(Boolean).length} correct so far</span>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options" id="opts-wrap">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="selectOpt(${i})">${String.fromCharCode(65+i)}.&nbsp; ${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfb"></div>
+    <div class="quiz-nav">
+      <span class="qn-label" id="qn-label"></span>
+      ${currentQ < quizData.length-1 ? `<button class="next-q" id="nxt-btn" style="display:none" onclick="nextQ()">Next question →</button>` : `<button class="next-q" id="nxt-btn" style="display:none" onclick="showScore()">See final score →</button>`}
+    </div>
+  `;
+}
+
+function selectOpt(i) {
+  const q = quizData[currentQ];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  const fb = document.getElementById('qfb');
+  const nxt = document.getElementById('nxt-btn');
+  const lbl = document.getElementById('qn-label');
+  if (i === q.ans) {
+    opts[i].classList.add('correct');
+    fb.className='quiz-feedback show good';
+    fb.innerHTML='<strong>Correct!</strong> '+q.exp;
+    answered.push(true);
+    lbl.textContent='';
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className='quiz-feedback show bad';
+    fb.innerHTML='<strong>Not quite.</strong> '+q.exp;
+    answered.push(false);
+    lbl.textContent='';
+  }
+  if (nxt) nxt.style.display='block';
+}
+
+function nextQ() {
+  currentQ++;
+  renderQuiz();
+}
+
+function showScore() {
+  const c = document.getElementById('quiz-container');
+  const sc = answered.filter(Boolean).length;
+  const pct = Math.round((sc/quizData.length)*100);
+  c.innerHTML=`
+    <div style="text-align:center;padding:24px 0">
+      <div style="font-size:48px;font-weight:500;color:${pct>=80?'#27500A':pct>=60?'#633806':'#791F1F'}">${sc}/${quizData.length}</div>
+      <div style="font-size:18px;color:var(--color-text-secondary);margin:6px 0">${pct}%</div>
+      <div style="font-size:14px;color:var(--color-text-tertiary);margin-bottom:20px">${pct>=80?'Excellent! You have a strong grasp of the material.':pct>=60?'Good effort — review the chapters where you struggled.':'Keep studying — revisit the core chapters and try again.'}</div>
+      <button onclick="restartQuiz()" style="font-size:14px;cursor:pointer;padding:8px 20px">Retake quiz</button>
+    </div>
+  `;
+}
+
+function restartQuiz() {
+  currentQ=0; answered=[];
+  renderQuiz();
+}
+
+function toggleAns(i) {
+  const d = document.getElementById('ans-'+i);
+  const btn = d.previousElementSibling;
+  if (d.style.display==='none') { d.style.display='block'; btn.textContent='Hide answer'; }
+  else { d.style.display='none'; btn.textContent='Show answer'; }
+}
+
+function buildCalc() {
+  const updateCalc = () => {
+    const cc = parseFloat(document.getElementById('cc').value)||0;
+    const vc = parseFloat(document.getElementById('vc').value)||0;
+    const va = parseFloat(document.getElementById('va').value)||0;
+    const ratio = parseFloat(document.getElementById('ratio').value)||1;
+    const nc = cc*(vc/1000);
+    const na = nc*ratio;
+    const ca = na/(va/1000);
+    const out = document.getElementById('calc-out');
+    if (!out) return;
+    out.innerHTML=`
+      n(titrant) = ${cc.toFixed(4)} × ${(vc/1000).toFixed(5)} = <strong>${nc.toExponential(4)} mol</strong><br>
+      n(analyte) = ${nc.toExponential(4)} × ${ratio} = <strong>${na.toExponential(4)} mol</strong><br>
+      c(analyte) = ${na.toExponential(4)} ÷ ${(va/1000).toFixed(5)} = <strong>${ca.toFixed(4)} mol/L</strong>
+    `;
+  };
+  ['cc','vc','va','ratio'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('input',updateCalc);
+  });
+  updateCalc();
+}
+
+function switchChapter(idx) {
+  document.querySelectorAll('.chapter').forEach((c,i)=>{
+    c.classList.toggle('active', i===idx);
+  });
+  document.querySelectorAll('.ch-btn').forEach((b,i)=>{
+    b.classList.toggle('active', i===idx);
+  });
+  const dots = document.querySelectorAll('.prog-dot');
+  dots.forEach((d,i)=>d.classList.toggle('done', i<=idx));
+  if (idx===5) setTimeout(buildCalc, 50);
+  if (idx===9) setTimeout(renderQuiz, 50);
+  document.getElementById('content-area').scrollTop=0;
+}
+
+function init() {
+  const list = document.getElementById('ch-list');
+  const area = document.getElementById('content-area');
+  const prog = document.getElementById('prog-row');
+  chapters.forEach((ch,i) => {
+    const btn = document.createElement('button');
+    btn.className='ch-btn'+(i===0?' active':'');
+    btn.innerHTML=`<span class="ch-num">${i+1}</span><span class="ch-label">${ch.title}</span>`;
+    btn.onclick=()=>switchChapter(i);
+    list.appendChild(btn);
+    const div = document.createElement('div');
+    div.className='chapter'+(i===0?' active':'');
+    div.innerHTML=`
+      <div class="ch-hero">
+        <div class="ch-hero-tag">Chapter ${i+1}</div>
+        <div class="ch-hero-title">${ch.full}</div>
+        <div class="ch-hero-desc">${ch.desc}</div>
+      </div>
+      ${ch.content}
+    `;
+    area.appendChild(div);
+    const dot=document.createElement('div');
+    dot.className='prog-dot'+(i===0?' done':'');
+    prog.appendChild(dot);
+  });
+  buildCalc();
+}
+
+init();
+</script>
